@@ -1,6 +1,5 @@
-#!/usr/bin/python2
 """Usage:
-    pymoticz list [--host=<host>]
+    pymoticz list [--host=<host>] [--names]
     pymoticz test
     pymoticz status <id> [--host=<host>]
     pymoticz on <id> [--host=<host>]
@@ -27,6 +26,10 @@ class Pymoticz:
             return json.loads(r.text)
         else:
             raise
+
+    def list_names(self):
+        l=self.list()
+        return [device['Name'] for device in l['result']]
 
     def list(self):
         url='http://%s/json.htm?type=devices&used=true' % self.host
@@ -82,8 +85,10 @@ if __name__ == '__main__':
         p=Pymoticz()
 
     if args['list']:
-        response = p.list()
-        pprint(response)
+        if args['--names']:
+            print('\n'.join(p.list_names()))
+        else:
+            pprint(p.list())
     elif args['status']:
         response = p.get_light_status(args['<id>'])
         print(response)

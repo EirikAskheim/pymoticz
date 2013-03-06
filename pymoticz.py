@@ -41,7 +41,11 @@ class Pymoticz:
         return self._request(url)
 
     def dim(self, _id, level):
-        max_dim=self.get_device(_id)['MaxDimLevel']
+        d=self.get_device(_id)
+        if d is None:
+            return 'No device with that id.'
+
+        max_dim=d['MaxDimLevel']
         if int(level) > max_dim or int(level) < 0:
             return 'Level has to be in the range 0 to %d' % max_dim
         url='http://%s/json.htm?type=command&param=switchlight&idx=%s&switchcmd=Set Level&level=%s' % (self.host, _id, level)
@@ -49,7 +53,10 @@ class Pymoticz:
 
     def get_device(self, _id):
         l=self.list()
-        device=[i for i in l['result'] if i['idx'] == u'%s' % _id][0]
+        try:
+            device=[i for i in l['result'] if i['idx'] == u'%s' % _id][0]
+        except:
+            return None
         return device
 
     def get_light_status(self, _id):
@@ -76,7 +83,7 @@ if __name__ == '__main__':
 
     if args['list']:
         response = p.list()
-        print(response)
+        pprint(response)
     elif args['status']:
         response = p.get_light_status(args['<id>'])
         print(response)
@@ -86,4 +93,4 @@ if __name__ == '__main__':
         response = p.turn_off(args['<id>'])
     elif args['dim']:
         response = p.dim(args['<id>'], args['<level>'])
-        pprint(response)
+        print(response)

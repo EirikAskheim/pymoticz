@@ -7,11 +7,11 @@
     pymoticz off <id> [--host]
     pymoticz dim <id> <level> [--host]
 """
-import sys
-from docopt import docopt
-from pprint import pprint
 import requests
 import json
+
+__all__ = [ 'Pymoticz' ]
+__version__ = '0.1'
 
 class Pymoticz:
     DIMMER = u'Dimmer'
@@ -64,23 +64,26 @@ class Pymoticz:
             return light['Status']
 
 if __name__ == '__main__':
-    args=docopt(__doc__)
+    from docopt import docopt
+    from pprint import pprint
+    args=docopt(__doc__, version=__version__)
+
+    p=None
+    if args['--host']:
+        p=Pymoticz(args['--host'])
+    else:
+        p=Pymoticz()
 
     if args['list']:
-        p=Pymoticz()
         response = p.list()
-        print response
+        print(response)
     elif args['status']:
-        p=Pymoticz()
         response = p.get_light_status(args['<id>'])
         print(response)
     elif args['on']:
-        p=Pymoticz()
         response = p.turn_on(args['<id>'])
     elif args['off']:
-        p=Pymoticz()
         response = p.turn_off(args['<id>'])
     elif args['dim']:
-        p=Pymoticz()
         response = p.dim(args['<id>'], args['<level>'])
         pprint(response)

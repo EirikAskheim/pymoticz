@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Usage:
     pymoticz list [--host=<host>] [--names]
     pymoticz test

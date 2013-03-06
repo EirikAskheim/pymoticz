@@ -1,11 +1,11 @@
 #!/usr/bin/python2
 """Usage:
-    pymoticz list [--host]
+    pymoticz list [--host=<host>]
     pymoticz test
-    pymoticz status <id> [--host]
-    pymoticz on <id> [--host]
-    pymoticz off <id> [--host]
-    pymoticz dim <id> <level> [--host]
+    pymoticz status <id> [--host=<host>]
+    pymoticz on <id> [--host=<host>]
+    pymoticz off <id> [--host=<host>]
+    pymoticz dim <id> <level> [--host=<host>]
 """
 import requests
 import json
